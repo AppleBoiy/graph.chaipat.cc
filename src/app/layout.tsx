@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 
 import { getGraphStats } from "@/lib/graph-mock-api";
 import SearchBar from "@/components/graph/SearchBar";
+import { Suspense } from "react";
 
 export default async function RootLayout({
   children,
@@ -55,7 +56,9 @@ export default async function RootLayout({
             </div>
           </div>
 
-          <SearchBar />
+          <Suspense fallback={<div className="flex-1 max-w-2xl mx-8 h-9 bg-[#F5F5F5] rounded-lg animate-pulse" />}>
+            <SearchBar />
+          </Suspense>
 
           {/* Stats */}
           <div className="hidden md:flex items-center gap-6 text-[10px] font-mono tracking-wide" style={{ color: "#000000" }}>
@@ -75,3 +78,4 @@ export default async function RootLayout({
     </html>
   );
 }
+

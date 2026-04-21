@@ -6,9 +6,10 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { ScanEye, Search } from 'lucide-react';
 import GraphCanvas from '@/components/graph/GraphCanvas';
 import GraphToolbox, { InteractionMode } from '@/components/graph/GraphToolbox';
+import { Suspense } from 'react';
 import { getAllNodeIds, getNodeLabel } from '@/lib/graph-mock-api';
 
-export default function GraphLab() {
+function GraphLabContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [mode, setMode] = useState<InteractionMode>('explore');
@@ -288,5 +289,20 @@ export default function GraphLab() {
         isSettingsOpen={isSettingsOpen}
       />
     </div>
+  );
+}
+
+export default function GraphLab() {
+  return (
+    <Suspense fallback={
+      <div className="flex-1 h-full bg-white flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-black/10 border-t-black rounded-full animate-spin" />
+          <p className="text-[10px] font-black uppercase tracking-widest text-black/40">Initializing Workbench...</p>
+        </div>
+      </div>
+    }>
+      <GraphLabContent />
+    </Suspense>
   );
 }
