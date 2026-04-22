@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🔬 Graph Laboratory: High-Density Research Workspace
 
-## Getting Started
+A professional, research-grade analytical environment designed for exploring complex, large-scale system-of-systems datasets. This workbench prioritizes technical clarity, surgical interaction, and a clinical, paper-first aesthetic.
 
-First, run the development server:
+## 🚀 Core Research Orchestrations
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 1. High-Density Technical Architecture
+- **Scale-Ready Topology**: Engineered to handle technical ecosystems (ADS, Aerospace, Healthcare) with hundreds of granular sub-modules and complex lateral feedback loops.
+- **Radial Discovery Protocol**: Standardized root-centric exploration that reveals architectural complexity incrementally, preventing visual congestion.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Surgical Navigation & Discovery
+- **Technical Node Registry**: A comprehensive, searchable global index allowing researchers to instantly pivot their perspective to any node in the architecture.
+- **Focal-Centric UI**: Camera-pivoting mechanics (`centerAt`) that anchor the viewport to the active research module, ensuring focus remains stabilized during expansion.
+- **Perspective Gallery**: A high-fidelity visual index featuring live architectural fingerprints and structural previews for rapid perspective selection.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Professional Instrumentation
+- **Centralized Toolbox**: A unified global command sidebar for structural orchestration, including focal resets, gallery toggles, and technical registry access.
+- **Geometric Feedback**: Dynamic rendering logic where terminal nodes transform into hollow diamonds to denote architectural depth and depth-tier validation.
+- **Interactive Legend**: High-fidelity technical hints and categorical filtering for real-time metadata context.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Clinical Research Aesthetic
+- **Monotone High-Contrast Design**: A minimalist design system inspired by scientific research journals, prioritizing data over decoration.
+- **Precision Grids & Rulers**: Dual-layer sub-pixel grid system (20px/100px intervals) and technical rulers for absolute spatial reference.
+- **Micro-animations**: Subtle, high-frequency interactive feedback layers for a premium, responsive investigative experience.
 
-## Learn More
+## 🛠️ Technical Infrastructure
 
-To learn more about Next.js, take a look at the following resources:
+- **Framework**: Next.js 15 (App Router) with TypeScript
+- **Engine**: High-performance force-directed simulation (D3-Force / React-Force-Graph)
+- **Logic**: Adjacency-list discovery with surgical neighbor filtering
+- **Style**: Vanilla CSS with glassmorphism and technical typography (Geist/Monospace)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> [!NOTE]
+> The Graph Laboratory is a research-grade instrument. Technical Registry and Gallery Previews are diagnostic features designed for high-density investigation.
