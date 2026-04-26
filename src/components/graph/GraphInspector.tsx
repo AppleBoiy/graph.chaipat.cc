@@ -3,7 +3,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Info, Share2, ChevronRight, Loader2, X } from "lucide-react";
-import { NodeDetail } from "@/lib/graph-mock-api";
+import { NodeDetail } from "@/lib/types";
 
 interface GraphInspectorProps {
   detail: NodeDetail | null;
@@ -70,16 +70,21 @@ export default function GraphInspector({ detail, loading, onClose }: GraphInspec
 
                 {/* Actions */}
                 <section className="pt-4">
-                  <div className="flex items-center gap-2 mb-4 text-[#999]">
-                    <Share2 className="w-3.5 h-3.5" />
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em]">Quick Actions</h3>
-                  </div>
-                  <div className="space-y-2">
-                    <button className="w-full flex items-center justify-between p-4 bg-[#111] text-white hover:bg-[#333] transition-all group">
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Execute Deep Search</span>
+                  <div className="pt-6 border-t border-black/10">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-black/40 flex items-center gap-2 mb-4">
+                      <Share2 className="w-3 h-3" /> Quick Actions
+                    </span>
+                    <button 
+                      onClick={() => {
+                        const query = encodeURIComponent(detail.label);
+                        window.open(`https://archive.chaipat.cc?q=${query}`, '_blank');
+                      }}
+                      className="w-full bg-black text-white p-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-between group hover:bg-[#111111] transition-all active:scale-[0.98]"
+                    >
+                      Execute Deep Search
                       <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </button>
-                    <button className="w-full p-4 border border-[#CCCCCC] text-[#333] text-[10px] font-bold uppercase tracking-widest hover:bg-[#F5F5F5] transition-colors">
+                    <button className="w-full mt-2 p-4 border border-[#CCCCCC] text-[#333] text-[10px] font-bold uppercase tracking-widest hover:bg-[#F5F5F5] transition-colors">
                       Export Node Graph
                     </button>
                   </div>

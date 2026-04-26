@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ScanEye, Search } from 'lucide-react';
 import GraphCanvas from '@/components/graph/GraphCanvas';
 import GraphToolbox, { InteractionMode } from '@/components/graph/GraphToolbox';
 import { Suspense } from 'react';
-import { getAllNodeIds, getNodeLabel } from '@/lib/graph-mock-api';
+import { searchNodes } from '@/lib/graph-actions';
+import { KGNode } from '@/lib/types';
 
 function GraphLabContent() {
   const searchParams = useSearchParams();
@@ -19,17 +20,19 @@ function GraphLabContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isRegistryOpen, setIsRegistryOpen] = useState(false);
   const [registrySearch, setRegistrySearch] = useState('');
+  const [registryNodes, setRegistryNodes] = useState<KGNode[]>([]);
   const [bottomPanelTab, setBottomPanelTab] = useState<'gallery' | 'sql' | 'terminal'>('gallery');
   const [isBottomPanelVisible, setIsBottomPanelVisible] = useState(false);
   const [resetCounter, setResetCounter] = useState(0);
   
-  const roots = useMemo(() => searchParams.get('roots')?.split(',').filter(Boolean) || ['ads'], [searchParams]);
+  const roots = useMemo(() => searchParams.get('roots')?.split(',').filter(Boolean) || ['idx'], [searchParams]);
 
-  const allNodeIds = useMemo(() => getAllNodeIds(), []);
-  const filteredNodes = useMemo(() => {
-    const q = registrySearch.toLowerCase();
-    return allNodeIds.filter(id => id.toLowerCase().includes(q) || getNodeLabel(id).toLowerCase().includes(q));
-  }, [allNodeIds, registrySearch]);
+  // Load Registry from DB
+  useEffect(() => {
+    if (isRegistryOpen) {
+      searchNodes(registrySearch).then(setRegistryNodes);
+    }
+  }, [isRegistryOpen, registrySearch]);
 
   const handleSelectRoot = (id: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -107,14 +110,14 @@ function GraphLabContent() {
 
               <div className="flex-1 overflow-y-auto pr-4 custom-scrollbar">
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-                    {filteredNodes.map(id => (
+                    {registryNodes.map(node => (
                       <button
-                        key={id}
-                        onClick={() => handleSelectRoot(id)}
+                        key={node.id}
+                        onClick={() => handleSelectRoot(node.id)}
                         className="flex flex-col items-start p-4 hover:bg-black group transition-all rounded-lg border border-transparent hover:border-black"
                       >
-                         <span className="text-[14px] font-black text-black group-hover:text-white transition-colors tracking-tight">{getNodeLabel(id)}</span>
-                         <span className="text-[9px] font-mono text-gray-400 group-hover:text-gray-500 transition-colors uppercase mt-1">{id}</span>
+                         <span className="text-[14px] font-black text-black group-hover:text-white transition-colors tracking-tight">{node.label}</span>
+                         <span className="text-[9px] font-mono text-gray-400 group-hover:text-gray-500 transition-colors uppercase mt-1">{node.id}</span>
                       </button>
                     ))}
                  </div>

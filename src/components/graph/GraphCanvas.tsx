@@ -4,7 +4,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { Focus, Minimize2, ScanEye } from 'lucide-react';
-import { NodeClass, fetchNeighbors, fetchNodeDetail, getNodeById, getParentInfo, NodeDetail, ROOT_NODE } from '@/lib/graph-mock-api';
+import { fetchNeighbors, fetchNodeDetail, getNodeById, getParentInfo } from '@/lib/graph-actions';
+import { NodeClass, NodeDetail, ROOT_NODE } from '@/lib/types';
 import GraphInspector from './GraphInspector';
 import { InteractionMode } from './GraphToolbox';
 

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-import { getGraphStats } from "@/lib/graph-mock-api";
+import { getGraphStats } from "@/lib/graph-actions";
 import SearchBar from "@/components/graph/SearchBar";
 import { Suspense } from "react";
 import { sendHeartbeat } from "@/lib/heartbeat";

@@ -4,7 +4,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, Loader2, Plus, X } from 'lucide-react';
-import { searchNodes, KGNode } from '@/lib/graph-mock-api';
+import { searchNodes } from '@/lib/graph-actions';
+import { KGNode } from '@/lib/types';
 
 export default function SearchBar() {
   const router = useRouter();
