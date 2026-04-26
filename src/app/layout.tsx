@@ -9,6 +9,8 @@ const inter = Inter({
   display: "swap",
 });
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Graph Laboratory | Chaipat Jainan",
   description: "Interactive Knowledge Graph Exploration & Semantic Research Engine",
@@ -26,8 +28,8 @@ import { sendHeartbeat } from "@/lib/heartbeat";
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  // Fire-and-forget heartbeat
-  sendHeartbeat();
+  // Ensure pulse is sent before render
+  await sendHeartbeat();
   
   const stats = await getGraphStats().catch(() => ({ nodeCount: 0, edgeCount: 0 }));
 
