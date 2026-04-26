@@ -9,7 +9,7 @@ const inter = Inter({
   display: "swap",
 });
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600; // revalidate every hour
 
 export const metadata: Metadata = {
   title: "Graph Laboratory | Chaipat Jainan",

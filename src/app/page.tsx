@@ -4,7 +4,13 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { ScanEye, Search } from 'lucide-react';
-import GraphCanvas from '@/components/graph/GraphCanvas';
+import dynamic from 'next/dynamic';
+const GraphCanvas = dynamic(() => import('@/components/graph/GraphCanvas'), { 
+  ssr: false,
+  loading: () => <div className="w-full h-full bg-white flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-black/10 border-t-black rounded-full animate-spin" />
+  </div>
+});
 import GraphToolbox, { InteractionMode } from '@/components/graph/GraphToolbox';
 import { Suspense } from 'react';
 import { searchNodes } from '@/lib/graph-actions';
