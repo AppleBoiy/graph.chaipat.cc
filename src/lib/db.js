@@ -1,26 +1,32 @@
 import postgres from 'postgres';
 
-const getPostgresConfig = () => {
-  if (!process.env.POSTGRES_URL) return {};
+const createSqlInstance = () => {
+  const urlString = process.env.POSTGRES_URL;
+  if (!urlString) return postgres({ ssl: 'require', max: 10 });
+
   try {
-    const url = new URL(process.env.POSTGRES_URL);
-    return {
+    const url = new URL(urlString);
+    return postgres({
       host: url.hostname,
-      port: parseInt(url.port),
+      port: url.port ? parseInt(url.port) : 5432,
       database: url.pathname.substring(1),
       username: url.username,
       password: url.password,
-    };
+      ssl: 'require',
+      max: 10,
+      idle_timeout: 20,
+      connect_timeout: 30,
+    });
   } catch (e) {
-    return process.env.POSTGRES_URL;
+    return postgres(urlString, {
+      ssl: 'require',
+      max: 10,
+      idle_timeout: 20,
+      connect_timeout: 30,
+    });
   }
 };
 
-const sql = postgres(getPostgresConfig(), {
-  ssl: 'require',
-  max: 10,
-  idle_timeout: 20,
-  connect_timeout: 30,
-});
+const sql = createSqlInstance();
 
 export default sql;
