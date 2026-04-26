@@ -9,9 +9,10 @@ interface GraphInspectorProps {
   detail: NodeDetail | null;
   loading: boolean;
   onClose: () => void;
+  onExport?: () => void;
 }
 
-export default function GraphInspector({ detail, loading, onClose }: GraphInspectorProps) {
+export default function GraphInspector({ detail, loading, onClose, onExport }: GraphInspectorProps) {
   return (
     <AnimatePresence>
       {(detail || loading) && (
@@ -84,7 +85,10 @@ export default function GraphInspector({ detail, loading, onClose }: GraphInspec
                       Execute Deep Search
                       <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </button>
-                    <button className="w-full mt-2 p-4 border border-[#CCCCCC] text-[#333] text-[10px] font-bold uppercase tracking-widest hover:bg-[#F5F5F5] transition-colors">
+                    <button 
+                      onClick={onExport}
+                      className="w-full mt-2 p-4 border border-[#CCCCCC] text-[#333] text-[10px] font-bold uppercase tracking-widest hover:bg-[#F5F5F5] transition-colors"
+                    >
                       Export Node Graph
                     </button>
                   </div>

@@ -340,6 +340,29 @@ export default function GraphCanvas({
     fgRef.current?.zoomToFit(800, metrics.padding);
   }, [metrics.padding]);
 
+  const handleExport = useCallback(() => {
+    if (!graphData.nodes.length) return;
+    
+    const exportData = {
+      timestamp: new Date().toISOString(),
+      perspective: currentRootId,
+      nodes: graphData.nodes.map(n => ({ id: n.id, label: n.label, class: n.class })),
+      links: graphData.links.map(l => ({ 
+        source: typeof l.source === 'object' ? l.source.id : l.source,
+        target: typeof l.target === 'object' ? l.target.id : l.target,
+        label: l.label 
+      }))
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `graph_export_${currentRootId}_${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [graphData, currentRootId]);
+
   useEffect(() => {
     if (resetCounter > 0) {
       handleResetView();
@@ -598,7 +621,12 @@ export default function GraphCanvas({
         minZoom={0.1} maxZoom={maxZoomLevel}
       />
 
-      <GraphInspector detail={detail} loading={loadingDetail} onClose={() => { setSelectedId(null); setDetail(null); }} />
+      <GraphInspector 
+        detail={detail} 
+        loading={loadingDetail} 
+        onClose={() => { setSelectedId(null); setDetail(null); }} 
+        onExport={handleExport}
+      />
     </div>
   );
 }
