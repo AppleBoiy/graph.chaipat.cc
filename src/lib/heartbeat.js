@@ -10,6 +10,8 @@ export async function sendHeartbeat() {
   try {
     await redis.set('pulse:gph', Date.now(), 'EX', 300);
   } catch (err) {
-    console.warn('Heartbeat pulse failed');
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Heartbeat pulse failed');
+    }
   }
 }

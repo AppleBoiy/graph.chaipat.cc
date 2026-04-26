@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
 
-if (!process.env.REDIS_URL) {
+if (!process.env.REDIS_URL && process.env.NODE_ENV !== 'production') {
   console.warn('WARNING: REDIS_URL is not defined in graph project environment variables.');
 }
 
