@@ -8,17 +8,13 @@ import { KGNode, KGLink, NeighborResult, NodeDetail } from './types';
  */
 export async function fetchNeighbors(nodeId: string): Promise<NeighborResult> {
   try {
-    const [centerNode] = await sql`
-      SELECT id, label, class FROM kg_nodes WHERE id = ${nodeId}
-    ` as any[];
+    // 1. Fetch center node and edges in parallel
+    const [centerNodes, edges] = await Promise.all([
+      sql`SELECT id, label, class FROM kg_nodes WHERE id = ${nodeId}`,
+      sql`SELECT source_id as source, target_id as target, label FROM kg_edges WHERE source_id = ${nodeId} OR target_id = ${nodeId}`
+    ]) as [any[], KGLink[]];
 
-    if (!centerNode) return { nodes: [], links: [] };
-
-    const edges = await sql`
-      SELECT source_id as source, target_id as target, label
-      FROM kg_edges
-      WHERE source_id = ${nodeId} OR target_id = ${nodeId}
-    ` as KGLink[];
+    const centerNode = centerNodes[0];
 
     const neighborIds = new Set<string>();
     edges.forEach(e => {
@@ -30,7 +26,7 @@ export async function fetchNeighbors(nodeId: string): Promise<NeighborResult> {
     let neighborNodes: KGNode[] = [];
     if (neighborIds.size > 0) {
       neighborNodes = await sql`
-        SELECT id, label, class FROM kg_nodes WHERE id IN ${sql(Array.from(neighborIds))}
+        SELECT id, label, class FROM kg_nodes WHERE id = ANY(${Array.from(neighborIds)})
       ` as KGNode[];
     }
 
@@ -67,8 +63,11 @@ export async function searchNodes(query: string): Promise<KGNode[]> {
  */
 export async function getGraphStats() {
   try {
-    const [{ count: nodeCount }] = await sql`SELECT count(*) FROM kg_nodes`;
-    const [{ count: edgeCount }] = await sql`SELECT count(*) FROM kg_edges`;
+    const [[{ count: nodeCount }], [{ count: edgeCount }]] = await Promise.all([
+      sql`SELECT count(*) FROM kg_nodes`,
+      sql`SELECT count(*) FROM kg_edges`
+    ]) as [any[], any[]];
+    
     return { 
       nodeCount: parseInt(nodeCount), 
       edgeCount: parseInt(edgeCount) 
@@ -101,8 +100,20 @@ export async function fetchNodeDetail(nodeId: string): Promise<NodeDetail | null
     // If it's a system node, pull real-time data from Redis
     const sid = nodeId.toLowerCase();
     if (systemNodes.includes(sid)) {
-      const pulse = await redis.get(`pulse:${sid}`);
-      const history = await redis.lrange(`pulse:${sid}:history`, 0, 0);
+      const pipeline = redis.pipeline();
+      pipeline.get(`pulse:${sid}`);
+      pipeline.lrange(`pulse:${sid}:history`, 0, 0);
+      
+      const results = await pipeline.exec();
+      
+      let pulse: string | null = null;
+      let history: string[] = [];
+
+      if (results) {
+        pulse = results[0][1] as string;
+        history = results[1][1] as string[];
+      }
+      
       const now = Date.now();
       const isOnline = pulse && (now - parseInt(pulse)) < 60000;
 
