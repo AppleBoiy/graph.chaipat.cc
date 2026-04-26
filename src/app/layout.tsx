@@ -21,10 +21,14 @@ export const metadata: Metadata = {
 import { getGraphStats } from "@/lib/graph-mock-api";
 import SearchBar from "@/components/graph/SearchBar";
 import { Suspense } from "react";
+import { sendHeartbeat } from "@/lib/heartbeat";
 
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Fire-and-forget heartbeat
+  sendHeartbeat();
+  
   const stats = await getGraphStats().catch(() => ({ nodeCount: 0, edgeCount: 0 }));
 
   return (
