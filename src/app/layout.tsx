@@ -12,13 +12,15 @@ const inter = Inter({
 export const revalidate = 3600; // revalidate every hour
 
 export const metadata: Metadata = {
-  title: "Graph Laboratory | Chaipat Jainan",
+  title: `Graph Laboratory | ${process.env.NEXT_PUBLIC_IDENTITY_FULLNAME}`,
   description: "Interactive Knowledge Graph Exploration & Semantic Research Engine",
   openGraph: {
-    title: "Graph Laboratory | Chaipat Jainan",
+    title: `Graph Laboratory | ${process.env.NEXT_PUBLIC_IDENTITY_FULLNAME}`,
     description: "Interactive Knowledge Graph Exploration",
   },
 };
+
+
 
 import { getGraphStats } from "@/lib/graph-actions";
 import SearchBar from "@/components/graph/SearchBar";
